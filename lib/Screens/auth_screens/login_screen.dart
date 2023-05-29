@@ -14,6 +14,7 @@ import 'package:vid_chex_app/widgets/button.dart';
 import 'package:vid_chex_app/widgets/button_text.dart';
 
 import '../../widgets/back_button.dart';
+import 'create_account.dart';
 
 class LogInScreen extends StatefulWidget {
   const LogInScreen({Key? key}) : super(key: key);
@@ -42,13 +43,41 @@ class _LogInScreenState extends State<LogInScreen> {
           idToken: googleAuth.idToken,
         );
         final UserCredential userCredential = await _auth.signInWithCredential(credential);
-        return userCredential.user;
+
+        final user = userCredential.user;
+        if (user != null) {
+          final String userId = user.uid;
+
+          FirebaseFirestore.instance.collection('user').doc(userId).set({
+            'userid': userId,
+            'firstName': user.displayName,
+            'LastName': '',
+            'email': user.email,
+            'password': '',
+            'userImg': '',
+            'acctFrom': 'Google',
+            'createdOn': Timestamp.now(),
+            'dateOfBirth': '',
+            'gender': '',
+            'country':'',
+            'city': '',
+            'about':'',
+          }).then((value) {
+            Navigator.push(context, MaterialPageRoute(builder: (_) {
+              return BottomNevigation(initialIndex: 1);
+            }));
+          });
+
+          return user;
+        }
       }
     } catch (e) {
       print('Sign-in with Google failed: $e');
     }
+
     return null;
   }
+
   @override
   void dispose() {
     _emailTextController.dispose();

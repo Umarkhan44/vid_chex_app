@@ -1,20 +1,24 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:vid_chex_app/Screens/auth_screens/login_screen.dart';
 import 'package:vid_chex_app/Screens/profile/edit_profile.dart';
 import 'package:vid_chex_app/Screens/profile/settings.dart';
 import 'package:vid_chex_app/screens/profile/terms_conditions.dart';
 import 'package:vid_chex_app/widgets/button_text.dart';
 
+
+
 import '../../conts/Color.dart';
 
 class Profile extends StatefulWidget {
 
-  const Profile({Key? key, }) : super(key: key);
+   Profile({Key? key, }) : super(key: key);
 
   @override
   State<Profile> createState() => _ProfileState();
+
 }
 
 class _ProfileState extends State<Profile> {
@@ -195,12 +199,11 @@ class _ProfileState extends State<Profile> {
                                       SizedBox(height: 30),
                                       ElevatedButton(
                                         onPressed: () async {
-                                          await FirebaseAuth.instance.signOut();
+                                          await _signOut();
                                           Navigator.pushReplacement(
                                             context,
                                             MaterialPageRoute(
-                                              builder: (context) =>
-                                                  LogInScreen(),
+                                              builder: (context) => LogInScreen(),
                                             ),
                                           );
                                         },
@@ -208,13 +211,12 @@ class _ProfileState extends State<Profile> {
                                         style: ElevatedButton.styleFrom(
                                           primary: CustomColors.green,
                                           shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(8.0),
+                                            borderRadius: BorderRadius.circular(8.0),
                                           ),
-                                          minimumSize: Size(220,
-                                              40), // set minimum height and width
+                                          minimumSize: Size(220, 40), // set minimum height and width
                                         ),
                                       )
+
                                     ],
                                   ),
                                 ),
@@ -240,4 +242,17 @@ class _ProfileState extends State<Profile> {
                   });
             }));
   }
+  final GoogleSignIn _googleSignIn = GoogleSignIn();
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  Future<void> _signOut() async {
+    try {
+      await _googleSignIn.signOut();
+      await _auth.signOut();
+      // Perform any additional sign-out actions or navigations
+
+    } catch (e) {
+      print('Sign-out failed: $e');
+    }
+  }
+
 }

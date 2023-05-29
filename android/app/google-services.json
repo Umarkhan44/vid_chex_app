@@ -14,7 +14,15 @@
       },
       "oauth_client": [
         {
-          "client_id": "591022967578-1nnlf4asnj67mnv2nqbn7hf4hr4q9qjo.apps.googleusercontent.com",
+          "client_id": "591022967578-nup2691thfo8h1qhrbef6suld9cmqpr3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.vid_chex_app",
+            "certificate_hash": "f3b26cca3c03790b5368ba963955924d49b26dd5"
+          }
+        },
+        {
+          "client_id": "591022967578-ho2d8q9n43r2b5u1h5hvhrdacmeqepl6.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
